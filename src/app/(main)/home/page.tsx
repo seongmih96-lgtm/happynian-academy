@@ -26,7 +26,7 @@ export default async function HomePage() {
   // 2) 내 프로필
   const { data: profile } = await supabase
     .from('profiles')
-    .select('status, role, region, level')
+    .select('*')
     .eq('user_id', user.id)
     .maybeSingle();
 
