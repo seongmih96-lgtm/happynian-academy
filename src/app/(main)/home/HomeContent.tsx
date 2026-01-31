@@ -212,9 +212,9 @@ export default function HomeContent({ sessions, profile, favorites, activeLevelK
       map.get(key)!.push(s);
     }
 
-    for (const [, arr] of map.entries()) {
-      arr.sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
-    }
+    Array.from(map.values()).forEach((arr) => {
+  arr.sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
+});
 
     return Array.from(map.entries());
   }, [visibleSessions]);
