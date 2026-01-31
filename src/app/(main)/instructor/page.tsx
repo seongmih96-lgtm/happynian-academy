@@ -5,6 +5,27 @@ import type { Session, Profile } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
+// ✅ Session 타입이 요구하는 필수 필드까지 포함해서 통일
+const SESSION_SELECT = `
+  id,
+  title,
+  start_at,
+  end_at,
+  region,
+  level,
+  session_no,
+  classroom_url,
+  zoom_url,
+  materials_url,
+  materials,
+  notes,
+  course_id,
+  instructor,
+  visibility,
+  created_at,
+  updated_at
+`;
+
 export default async function InstructorPage() {
   const supabase = await createClient();
 
@@ -52,13 +73,12 @@ export default async function InstructorPage() {
       .limit(1);
 
     if (siErr) {
-      // 강사판별 쿼리 에러는 로그만 찍고, 아래에서 권한 컷되게 둠
       console.error('[instructor] session_instructors check error:', siErr);
     }
     isInstructor = (si?.length ?? 0) > 0;
   }
 
-  // 4) 권한 컷: admin도 아니고 강사도 아니면 컷
+  // 4) 권한 컷
   if (!isAdmin && !isInstructor) {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-6">
@@ -68,7 +88,6 @@ export default async function InstructorPage() {
             강사 전용 페이지는 <span className="font-semibold">강사로 배정된 계정</span>만 이용할 수 있어요.
           </div>
 
-          {/* 디버그(원인 확인용) */}
           <div className="text-[11px] text-neutral-400 mt-3">
             role: {String(role || 'null')} / isInstructor: {String(isInstructor)} / profile:{' '}
             {profile ? 'loaded' : 'null'} / err: {String(profileErrMsg ?? 'none')}
@@ -79,16 +98,14 @@ export default async function InstructorPage() {
   }
 
   // 5) 세션 로드
-  // ✅ 절대 sessions.instructor 컬럼 조회/필터 금지
-  let sessions: any[] = [];
+  // ✅ 절대 sessions.instructor 컬럼으로 필터링 하지 않음
+  let sessions: Session[] = [];
 
   if (isAdmin) {
-    // admin은 전체 세션(원하면 여기서 기간 필터 추가 가능)
+    // admin은 전체 세션
     const { data, error } = await supabase
       .from('sessions')
-      .select(
-        'id,title,start_at,end_at,region,level,session_no,classroom_url,zoom_url,materials_url,materials,notes'
-      )
+      .select(SESSION_SELECT)
       .order('start_at', { ascending: true });
 
     if (error) {
@@ -102,12 +119,13 @@ export default async function InstructorPage() {
       );
     }
 
-    sessions = (data ?? []) as Session[];
+    sessions = (data ?? []) as unknown as Session[];
   } else {
-    // 강사는 v_my_sessions 기반으로 "내 세션"만
+    // 강사는 v_my_sessions에서 session_id만 가져와서 sessions 재조회
     const { data: mySess, error: mySessErr } = await supabase
       .from('v_my_sessions')
-      .select('session_id');
+      .select('session_id')
+      .eq('instructor_user_id', user.id); // ✅ 뷰에 이 컬럼이 없다면 이 줄 삭제
 
     if (mySessErr) {
       return (
@@ -125,9 +143,7 @@ export default async function InstructorPage() {
     if (ids.length) {
       const { data: sData, error: sErr } = await supabase
         .from('sessions')
-        .select(
-          'id,title,start_at,end_at,region,level,session_no,classroom_url,zoom_url,materials_url,materials,notes'
-        )
+        .select(SESSION_SELECT)
         .in('id', ids)
         .order('start_at', { ascending: true });
 
@@ -142,14 +158,16 @@ export default async function InstructorPage() {
         );
       }
 
-      sessions = (sData ?? []) as Session[];
+      sessions = (sData ?? []) as unknown as Session[];
+    } else {
+      sessions = [];
     }
   }
 
   return (
     <InstructorClient
       profile={(profile as Profile) ?? null}
-      sessions={(sessions as Session[]) ?? []}
+      sessions={sessions}
     />
   );
 }
