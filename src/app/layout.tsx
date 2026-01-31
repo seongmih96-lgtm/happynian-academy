@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className="h-full">
+    <html lang="ko" className="min-h-dvh">
       <head>
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       {/* ✅ overflow-x-hidden: 가로 삐져나오는 요소를 전역에서 차단 */}
       <body className="min-h-dvh bg-neutral-50 overflow-x-hidden">
         {/* ✅ 모바일 기준 컨테이너: 모든 페이지 폭 통일 */}
-        <div className="mx-auto w-full max-w-md sm:max-w-xl md:max-w-3xl px-4">
+        <div className="mx-auto w-full max-w-lg sm:max-w-xl md:max-w-3xl px-4">
           {children}
         </div>
       </body>

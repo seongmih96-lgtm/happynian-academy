@@ -183,7 +183,7 @@ export default function ClassroomClient({
               <button
                 type="button"
                 onClick={() => router.push('/instructor')}
-                className="px-3 py-2 rounded-xl border border-neutral-200 bg-white text-sm hover:bg-neutral-50"
+                className="px-3 py-2 whitespace-nowrap rounded-xl border border-neutral-200 bg-white text-sm hover:bg-neutral-50"
               >
                 강사전용
               </button>
@@ -192,7 +192,7 @@ export default function ClassroomClient({
         }
       />
 
-      <main className="px-4 pb-8 space-y-3">
+      <main className="pb-8 space-y-3">
         {/* 1) 상태 */}
         <section className={UI.section}>
           <div className={UI.titleRow}>
@@ -280,16 +280,16 @@ export default function ClassroomClient({
               onClick={() => setTab('video')}
               className={cn(UI.tab, tab === 'video' ? UI.tabOn : UI.tabOff)}
             >
-              <span className="flex items-center justify-center gap-2">
-                <Video className="w-4 h-4" /> 강의 영상
-              </span>
+              <span className="flex items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-sm">
+  <Video className="w-4 h-4" /> 강의 영상
+</span>
             </button>
             <button
               type="button"
               onClick={() => setTab('zoom')}
               className={cn(UI.tab, tab === 'zoom' ? UI.tabOn : UI.tabOff)}
             >
-              <span className="flex items-center justify-center gap-2">
+              <span className="flex items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-sm">
                 <ExternalLink className="w-4 h-4" /> 줌 미팅
               </span>
             </button>
@@ -298,7 +298,7 @@ export default function ClassroomClient({
               onClick={() => setTab('materials')}
               className={cn(UI.tab, tab === 'materials' ? UI.tabOn : UI.tabOff)}
             >
-              <span className="flex items-center justify-center gap-2">
+              <span className="flex items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-sm">
                 <FileText className="w-4 h-4" /> 자료
               </span>
             </button>
