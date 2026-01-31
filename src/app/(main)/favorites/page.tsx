@@ -62,6 +62,13 @@ export default async function FavoritesPage() {
 
   const hiddenCount = (favoritesRaw?.length ?? 0) - favorites.length;
 
+  // ✅ C) 타입 에러 방지: Favorite 타입에 필요한 notify_rules 기본값 세팅
+  //    (Favorite.notify_rules가 배열 타입이면 null 대신 []로 바꿔도 OK)
+  const favoritesFixed = favorites.map((f: any) => ({
+    ...f,
+    notify_rules: f?.notify_rules ?? null,
+  }));
+
   // 4) 세션 전체 가져오기(일단 MVP: 전체→클라에서 필터)
   const { data: sessionsRaw, error: sessionsError } = await supabase
     .from('sessions')
@@ -89,7 +96,7 @@ export default async function FavoritesPage() {
   return (
     <FavoritesContent
       profile={profile}
-      favorites={favorites}
+      favorites={favoritesFixed}
       sessions={sessions}
       activeLevelKeys={activeLevelKeys}
       hiddenCount={hiddenCount}
