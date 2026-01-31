@@ -71,7 +71,7 @@ setFavCountMap(m);
 
   const list = useMemo(() => {
     const out: any[] = [];
-    for (const key of favSet) {
+    for (const key of Array.from(favSet)) {
       const [sid, k] = key.split('|') as [string, Kind];
       if (k !== kind) continue;
       const s = sessionMap.get(sid);
