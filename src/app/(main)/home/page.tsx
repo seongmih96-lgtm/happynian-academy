@@ -67,6 +67,18 @@ export default async function HomePage() {
       return { ...s, instructors };
     }) ?? [];
 
+    // ✅ activeLevelKeys 만들기 (region|level 조합)
+const activeLevelKeys = Array.from(
+  new Set(
+    (sessions ?? [])
+      .map((s: any) => `${String(s?.region ?? '').trim()}|${String(s?.level ?? '').trim()}`)
+      .filter((k: string) => {
+        const [region, level] = k.split('|');
+        return Boolean(region) && Boolean(level);
+      })
+  )
+);
+
   // ✅ (핵심) 전체기간 sessions에서 "유효 레벨키" 가져오기
   const { data: allSessions, error: allSessionsErr } = await supabase
     .from('sessions')
@@ -106,6 +118,7 @@ export default async function HomePage() {
       sessions={sessions}
       profile={profile}
       favorites={filteredFavorites}
+      activeLevelKeys={activeLevelKeys}
     />
   );
 }
