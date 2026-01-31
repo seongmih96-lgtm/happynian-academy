@@ -11,12 +11,14 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import type { Session, Profile, Favorite } from '@/types';
 import { filterSessions } from '@/lib/utils';
 
+type FavoritesProfile = Pick<Profile, 'status' | 'role' | 'region' | 'level'>;
+
 interface Props {
-  profile: Profile | null;
-  favorites: Favorite[];          // ✅ 서버에서 "유효한(삭제된 강의 제외)" 즐겨찾기만 내려옴
-  sessions: Session[];            // ✅ 전체 세션(전체기간)
-  hiddenCount?: number;           // ✅ 삭제된 강의로 인해 숨긴 즐겨찾기 수
-  activeLevelKeys?: string[];     // ✅ 필요하면 추후 사용
+  profile: FavoritesProfile | null;
+  favorites: Favorite[];
+  sessions: Session[];
+  hiddenCount?: number;
+  activeLevelKeys?: string[];
 }
 
 export default function FavoritesContent({
