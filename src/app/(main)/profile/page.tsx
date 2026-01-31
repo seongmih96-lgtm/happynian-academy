@@ -54,11 +54,11 @@ export default async function ProfilePage() {
 
   return (
     <ProfileContent
-      profile={profile as Profile}
-      favorites={(favorites as Favorite[]) ?? []}
-      payments={(payments as Payment[]) ?? []}
-      videoProgress={(videoProgress as VideoProgress[]) ?? []}
-      myLectureRegs={(myLectureRegs as MyLectureReg[]) ?? []}
+  profile={(profile as unknown as Profile) ?? null}
+  favorites={(favorites ?? []) as any}
+  payments={(payments ?? []) as any}
+  videoProgress={(videoProgress ?? []) as any}
+      myLectureRegs={(myLectureRegs ?? []) as any}
     />
   );
 }
