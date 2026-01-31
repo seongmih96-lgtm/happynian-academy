@@ -13,10 +13,10 @@ import { filterSessions } from '@/lib/utils';
 
 interface Props {
   profile: Profile | null;
-  favorites: Favorite[];          // ✅ 서버에서 "유효한(삭제된 강의 제외)" 알림만 내려옴
-  sessions: Session[];            // ✅ 전체 세션(전체기간)
+  favorites: any[];          // ✅ 서버에서 "유효한(삭제된 강의 제외)" 알림만 내려옴
+  sessions: any[];            // ✅ 전체 세션(전체기간)
   hiddenCount?: number;           // ✅ 삭제된 강의로 인해 숨긴 알림 수
-  activeLevelKeys?: string[];     // ✅ 필요하면 추후 사용
+  activeLevelKeys?: any[];     // ✅ 필요하면 추후 사용
 }
 
 export default function NotificationsContent({
