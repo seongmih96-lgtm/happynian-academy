@@ -1,13 +1,16 @@
 'use client';
 
+import React from 'react'
 import { cn } from '@/lib/utils';
 
 export function EmptyState({
   message,
+  emoji = '📭',
   className,
   children,
 }: {
   message: string;
+  emoji?: string;
   className?: string;
   children?: React.ReactNode;
 }) {
@@ -20,7 +23,7 @@ export function EmptyState({
     >
       {/* 아이콘(가볍게) */}
       <div className="w-12 h-12 rounded-2xl bg-neutral-100 flex items-center justify-center mb-4">
-        <span className="text-xl">📭</span>
+        <span className="text-xl">{emoji}</span>
       </div>
 
       {/* 메시지 */}
