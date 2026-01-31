@@ -1,28 +1,19 @@
-import { NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+// src/app/(auth)/signout/route.ts
+import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST() {
-  const cookieStore = await cookies()
-  const response = NextResponse.json({ ok: true })
+  const supabase = createClient();
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options)
-          })
-        },
-      },
-    }
-  )
+  // ✅ 세션 쿠키 정리는 supabase가 쿠키 setAll로 처리
+  const { error } = await supabase.auth.signOut();
 
-  await supabase.auth.signOut()
-  return response
+  if (error) {
+    return NextResponse.json(
+      { ok: false, error: error.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ ok: true });
 }
