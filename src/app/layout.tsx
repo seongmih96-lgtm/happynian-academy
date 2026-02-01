@@ -35,9 +35,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       {/* ✅ overflow-x-hidden: 가로 삐져나오는 요소를 전역에서 차단 */}
       <body className="min-h-dvh bg-neutral-50 overflow-x-hidden">
         {/* ✅ 모바일 기준 컨테이너: 모든 페이지 폭 통일 */}
-        <div className="mx-auto w-full max-w-lg sm:max-w-xl md:max-w-3xl px-4">
-          {children}
-        </div>
+        <div className="mx-auto w-full px-4 sm:max-w-xl md:max-w-3xl">
+  {children}
+</div>
       </body>
     </html>
   );
