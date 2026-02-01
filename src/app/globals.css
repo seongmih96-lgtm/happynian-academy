@@ -29,13 +29,12 @@
 
   body {
     @apply bg-neutral-50 text-neutral-900 antialiased;
-    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+      Roboto, sans-serif;
   }
 
-  /* iOS Safe Area */
-  html {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  }
+  /* ✅ iOS Safe Area는 html/body에 padding 주지 말고,
+     필요한 곳에서 pt-safe-top / pb-safe-bottom 유틸로만 처리 */
 }
 
 @layer components {
