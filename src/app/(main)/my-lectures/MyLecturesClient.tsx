@@ -813,9 +813,9 @@ function NeedList({
                       isOpen ? 'border-neutral-200 bg-neutral-50/40' : 'border-neutral-100 bg-white hover:bg-neutral-50/30'
                     )}
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      {/* left */}
-                      <div className="min-w-0 flex-1">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+  {/* left */}
+  <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 min-w-0">
                           <div className="text-sm font-semibold text-neutral-900 truncate">{s.title}</div>
 
@@ -861,12 +861,12 @@ function NeedList({
                                 const teacher = formatInstructors(p?.instructors ?? []);
 
                                 return (
-                                  <div key={pn} className="text-xs text-neutral-700 flex items-start gap-2">
-                                    <span className="shrink-0 w-10 text-neutral-500">{pn}교시</span>
-                                    <div className="min-w-0">
-                                      <div className={cn('truncate', !title && 'text-neutral-400')}>
-                                        {title ? `「${title}」` : '강의명 미지정'}
-                                      </div>
+                                  <div className={cn('text-xs text-neutral-700 flex items-start gap-2')}>
+  <span className="shrink-0 w-10 text-neutral-500">{pn}교시</span>
+  <div className="min-w-0">
+    <div className={cn('break-words line-clamp-2', !title && 'text-neutral-400')}>
+      {title ? `「${title}」` : '강의명 미지정'}
+    </div>
                                       <div className={cn('text-[11px] mt-0.5', !teacher ? 'text-neutral-400' : 'text-neutral-500')}>
                                         {teacher ? teacher : '강사 미지정'}
                                       </div>
@@ -885,34 +885,34 @@ function NeedList({
                         </div>
                       </div>
 
-                      {/* right actions */}
-                      <div className="shrink-0 flex flex-col items-end gap-2">
-                        <div className="grid grid-cols-3 gap-1">
-                          <MiniBtn disabled={!s.classroom_url} onClick={() => openUrl(s.classroom_url)}>
-                            영상
-                          </MiniBtn>
-                          <MiniBtn disabled={!s.zoom_url} onClick={() => openUrl(s.zoom_url)}>
-                            줌
-                          </MiniBtn>
-                          <MiniBtn disabled={!s.materials_url} onClick={() => openUrl(s.materials_url)}>
-                            자료
-                          </MiniBtn>
-                        </div>
+                      {/* right actions: 모바일에서는 아래로 내려오고 가로로 꽉 차게 */}
+  <div className="w-full md:w-auto flex flex-col gap-2">
+    <div className="grid grid-cols-3 gap-2">
+      <MiniBtn disabled={!s.classroom_url} onClick={() => openUrl(s.classroom_url)}>
+        영상
+      </MiniBtn>
+      <MiniBtn disabled={!s.zoom_url} onClick={() => openUrl(s.zoom_url)}>
+        줌
+      </MiniBtn>
+      <MiniBtn disabled={!s.materials_url} onClick={() => openUrl(s.materials_url)}>
+        자료
+      </MiniBtn>
+    </div>
 
-                        <button
-                          type="button"
-                          onClick={() => setExpandedId((prev) => (prev === s.id ? null : s.id))}
-                          className={cn(
-                            'px-3 py-2 rounded-xl border text-sm w-[120px] transition active:scale-[0.99]',
-                            isOpen
-                              ? 'bg-neutral-900 text-white border-neutral-900'
-                              : 'bg-white text-neutral-800 border-neutral-200 hover:bg-neutral-50'
-                          )}
-                        >
-                          {isOpen ? '접기' : '펼쳐보기'}
-                        </button>
-                      </div>
-                    </div>
+    <button
+      type="button"
+      onClick={() => setExpandedId((prev) => (prev === s.id ? null : s.id))}
+      className={cn(
+        'w-full md:w-[120px] px-3 py-2 rounded-xl border text-sm transition active:scale-[0.99]',
+        isOpen
+          ? 'bg-neutral-900 text-white border-neutral-900'
+          : 'bg-white text-neutral-800 border-neutral-200 hover:bg-neutral-50'
+      )}
+    >
+      {isOpen ? '접기' : '펼쳐보기'}
+    </button>
+  </div>
+</div>
 
                     {/* expanded */}
                     {isOpen && (

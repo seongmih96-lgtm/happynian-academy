@@ -88,7 +88,7 @@ export default function MyLecturesView({ hub }: Props) {
           </div>
 
           {/* KPI */}
-          <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
             <KpiCard title="이번달 내 강의 갯수" value={`${kpi?.monthCount ?? 0}개`} sub="(이번달 기준)" />
             <KpiCard title="내 강의를 듣는 수강생 수" value={`${kpi?.studentCount ?? 0}명`} sub="(펼쳐본 강의 기준 집계)" />
             <KpiCard title="내 강의 총 출석률" value={`${kpi?.attendanceRate ?? 0}%`} sub="(펼쳐본 강의 기준 집계)" />
@@ -96,7 +96,7 @@ export default function MyLecturesView({ hub }: Props) {
           </div>
 
           {/* Filters */}
-          <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
             <Select label="지역" value={region} onChange={setRegion} options={regionOptions} />
             <Select label="과정" value={level} onChange={setLevel} options={levelOptions} />
             <Select label="회차" value={sessionNo} onChange={setSessionNo} options={sessionNoOptions} />
@@ -135,90 +135,94 @@ export default function MyLecturesView({ hub }: Props) {
 
             return (
               <section key={s.id} className="bg-white border border-neutral-100 rounded-2xl p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="text-sm font-semibold text-neutral-900 truncate">{s.title}</div>
-                    <div className="mt-2 text-xs text-neutral-500">
-                      <span className="mr-2">{formatKoreanDate(s.start_at)}</span>
-                      <span className="text-neutral-300">·</span>
-                      <span className="ml-2">{formatTimeRange(s.start_at, s.end_at)}</span>
-                      {s.region ? <span className="ml-2 text-neutral-300">·</span> : null}
-                      {s.region ? <span className="ml-2">{s.region}</span> : null}
-                      {s.level ? <span className="ml-2 text-neutral-300">·</span> : null}
-                      {s.level ? <span className="ml-2">{s.level}</span> : null}
-                      {s.session_no != null ? <span className="ml-2 text-neutral-300">·</span> : null}
-                      {s.session_no != null ? <span className="ml-2">{s.session_no}회차</span> : null}
-                    </div>
+  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+    <div className="min-w-0">
+      <div className="text-sm font-semibold text-neutral-900 truncate">{s.title}</div>
 
-                    {/* quick stats */}
-                    {d && (
-                      <div className="mt-3 flex items-center gap-3 text-xs text-neutral-700">
-                        <span className="inline-flex items-center gap-1">
-                          <Users className="w-4 h-4" /> 수강생 {d.enrolledIds.length}명
-                        </span>
-                        <span className="inline-flex items-center gap-1">
-                          <CheckCircle2 className="w-4 h-4" /> 출석 {attendanceRate}%
-                        </span>
-                        <span className="inline-flex items-center gap-1">
-                          <CheckCircle2 className="w-4 h-4" /> 과제 {homeworkRate}%
-                        </span>
-                      </div>
-                    )}
-                  </div>
+      <div className="mt-2 text-xs text-neutral-500 flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span>{formatKoreanDate(s.start_at)}</span>
+        <span className="text-neutral-300">·</span>
+        <span>{formatTimeRange(s.start_at, s.end_at)}</span>
 
-                  <div className="flex flex-col gap-2 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => toggleExpand(s.id)}
-                      className={cn(
-                        'px-3 py-2 rounded-xl border text-sm flex items-center gap-2',
-                        isOpen
-                          ? 'bg-neutral-900 text-white border-neutral-900'
-                          : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'
-                      )}
-                    >
-                      {isOpen ? '접기' : '펼쳐보기'}
-                    </button>
+        {s.region ? <><span className="text-neutral-300">·</span><span>{s.region}</span></> : null}
+        {s.level ? <><span className="text-neutral-300">·</span><span>{s.level}</span></> : null}
+        {s.session_no != null ? <><span className="text-neutral-300">·</span><span>{s.session_no}회차</span></> : null}
+      </div>
 
-                    <div className="grid grid-cols-1 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => openUrl(urlVideo)}
-                        disabled={!urlVideo}
-                        className={cn(
-                          'px-3 py-2 rounded-xl text-sm flex items-center gap-2',
-                          urlVideo ? 'bg-neutral-900 text-white hover:opacity-90' : 'bg-neutral-100 text-neutral-400'
-                        )}
-                      >
-                        <ExternalLink className="w-4 h-4" /> 영상
-                      </button>
+      {/* quick stats */}
+      {d && (
+        <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-neutral-700">
+          <div className="rounded-xl border border-neutral-100 bg-neutral-50 px-3 py-2 flex items-center gap-1 justify-center">
+            <Users className="w-4 h-4" /> {d.enrolledIds.length}명
+          </div>
+          <div className="rounded-xl border border-neutral-100 bg-neutral-50 px-3 py-2 flex items-center gap-1 justify-center">
+            <CheckCircle2 className="w-4 h-4" /> 출석 {attendanceRate}%
+          </div>
+          <div className="rounded-xl border border-neutral-100 bg-neutral-50 px-3 py-2 flex items-center gap-1 justify-center">
+            <CheckCircle2 className="w-4 h-4" /> 과제 {homeworkRate}%
+          </div>
+        </div>
+      )}
+    </div>
 
-                      <button
-                        type="button"
-                        onClick={() => openUrl(urlZoom)}
-                        disabled={!urlZoom}
-                        className={cn(
-                          'px-3 py-2 rounded-xl text-sm flex items-center gap-2',
-                          urlZoom ? 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50' : 'bg-neutral-100 text-neutral-400'
-                        )}
-                      >
-                        <ExternalLink className="w-4 h-4" /> 줌
-                      </button>
+    {/* 버튼 영역: 모바일은 가로 배치 */}
+    <div className="w-full md:w-[220px] flex flex-col gap-2">
+      <button
+        type="button"
+        onClick={() => toggleExpand(s.id)}
+        className={cn(
+          'w-full px-3 py-2 rounded-xl border text-sm flex items-center justify-center gap-2',
+          isOpen
+            ? 'bg-neutral-900 text-white border-neutral-900'
+            : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'
+        )}
+      >
+        {isOpen ? '접기' : '펼쳐보기'}
+      </button>
 
-                      <button
-                        type="button"
-                        onClick={() => openUrl(urlMat)}
-                        disabled={!urlMat}
-                        className={cn(
-                          'px-3 py-2 rounded-xl text-sm flex items-center gap-2',
-                          urlMat ? 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50' : 'bg-neutral-100 text-neutral-400'
-                        )}
-                      >
-                        <ExternalLink className="w-4 h-4" /> 자료
-                      </button>
-                    </div>
-                  </div>
-                </div>
+      <div className="grid grid-cols-3 gap-2">
+        <button
+          type="button"
+          onClick={() => openUrl(urlVideo)}
+          disabled={!urlVideo}
+          className={cn(
+            'px-3 py-2 rounded-xl text-sm flex items-center justify-center gap-1',
+            urlVideo ? 'bg-neutral-900 text-white hover:opacity-90' : 'bg-neutral-100 text-neutral-400'
+          )}
+        >
+          <ExternalLink className="w-4 h-4" /> 영상
+        </button>
+
+        <button
+          type="button"
+          onClick={() => openUrl(urlZoom)}
+          disabled={!urlZoom}
+          className={cn(
+            'px-3 py-2 rounded-xl text-sm flex items-center justify-center gap-1',
+            urlZoom
+              ? 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50'
+              : 'bg-neutral-100 text-neutral-400'
+          )}
+        >
+          <ExternalLink className="w-4 h-4" /> 줌
+        </button>
+
+        <button
+          type="button"
+          onClick={() => openUrl(urlMat)}
+          disabled={!urlMat}
+          className={cn(
+            'px-3 py-2 rounded-xl text-sm flex items-center justify-center gap-1',
+            urlMat
+              ? 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50'
+              : 'bg-neutral-100 text-neutral-400'
+          )}
+        >
+          <ExternalLink className="w-4 h-4" /> 자료
+        </button>
+      </div>
+    </div>
+  </div>
 
                 {/* expanded */}
                 {isOpen && (
