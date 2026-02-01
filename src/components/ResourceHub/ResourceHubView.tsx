@@ -32,7 +32,7 @@ function TopTab({ active, onClick, icon, label }: any) {
       type="button"
       onClick={onClick}
       className={cn(
-        'rounded-xl px-3 py-2 border text-sm flex items-center justify-center gap-2',
+        'rounded-xl px-3 py-2 border text-sm flex items-center justify-center gap-2 whitespace-nowrap',
         active
           ? 'bg-neutral-900 text-white border-neutral-900'
           : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'
@@ -187,22 +187,24 @@ export default function ResourceHubView({
 
       {/* 헤더 */}
       <div className="sticky top-0 z-20 bg-neutral-50/90 backdrop-blur border-b border-neutral-100">
-        <div className="mx-auto w-full max-w-3xl px-4 py-3 flex items-center justify-between">
-          <div>
-            <div className="text-sm font-semibold text-neutral-900">{headerTitle}</div>
-            <div className="text-xs text-neutral-500 mt-0.5">{headerSub}</div>
-          </div>
+        <div className="mx-auto w-full max-w-3xl px-4 py-3 flex items-start justify-between gap-3">
+  <div className="min-w-0">
+    <div className="text-sm font-semibold text-neutral-900">{headerTitle}</div>
+    <div className="text-xs text-neutral-500 mt-0.5 break-keep leading-snug line-clamp-2">
+      {headerSub}
+    </div>
+  </div>
 
-          {showInstructorButton && (
-            <button
-              type="button"
-              onClick={onInstructorClick}
-              className="text-xs px-3 py-2 rounded-xl bg-neutral-900 text-white hover:opacity-90"
-            >
-              강사 전용 콘텐츠 🎓
-            </button>
-          )}
-        </div>
+  {showInstructorButton && (
+    <button
+      type="button"
+      onClick={onInstructorClick}
+      className="shrink-0 text-xs px-3 py-2 rounded-xl bg-neutral-900 text-white hover:opacity-90 whitespace-nowrap"
+    >
+      강사 전용 콘텐츠 🎓
+    </button>
+  )}
+</div>
 
         {/* 탭 */}
         <div className="mx-auto w-full max-w-3xl px-4 pb-3">
@@ -233,13 +235,13 @@ export default function ResourceHubView({
               type="button"
               onClick={() => setOnlyFavorites?.((v: boolean) => !v)}
               className={cn(
-                'w-full rounded-xl px-3 py-2 border text-sm',
+                'w-full rounded-xl px-3 py-2 border text-sm whitespace-nowrap',
                 onlyFavorites
                   ? 'bg-neutral-900 text-white border-neutral-900'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'
               )}
             >
-              {onlyFavorites ? '내가 찜한 것만 보는 중 ✅' : '내가 찜한 것만 모아보기 ON'}
+              {onlyFavorites ? '찜한 것만 보기 ✅' : '찜한 것만 보기'}
             </button>
           </div>
 
@@ -249,21 +251,21 @@ export default function ResourceHubView({
               <StatusChip
                 active={watchTab === 'before'}
                 onClick={() => setWatchTab('before')}
-                label="아직 시작하지 않은 강의"
+                label="진행전"
                 count={videoCounts?.before ?? 0}
                 icon={<Circle className="w-4 h-4" />}
               />
               <StatusChip
                 active={watchTab === 'watching'}
                 onClick={() => setWatchTab('watching')}
-                label="지금 배우고 있는 강의"
+                label="진행중"
                 count={videoCounts?.watching ?? 0}
                 icon={<Clock className="w-4 h-4" />}
               />
               <StatusChip
                 active={watchTab === 'done'}
                 onClick={() => setWatchTab('done')}
-                label="끝까지 함께한 강의"
+                label="완료"
                 count={videoCounts?.done ?? 0}
                 icon={<CheckCircle2 className="w-4 h-4" />}
               />
@@ -311,30 +313,30 @@ export default function ResourceHubView({
 
         {/* 리스트 */}
         <section className="bg-white rounded-2xl border border-neutral-100 p-4">
-          <div className="flex items-center justify-between gap-2">
-            <div>
-              <div className="text-sm font-semibold text-neutral-900">{tabTitle}</div>
-              <div className="text-xs text-neutral-500 mt-0.5">
-                {sortMode === 'recommended'
-                  ? '식구들이 많이 찜한 순으로 모았어요 💛'
-                  : isInstructorHub
-                  ? '가장 최근 업로드부터 보여줘요 🆕'
-                  : '가까운 일정부터 차근차근 정리했어요 🙂'}
-              </div>
-            </div>
+          <div className="flex items-start justify-between gap-3">
+  <div className="min-w-0">
+    <div className="text-sm font-semibold text-neutral-900">{tabTitle}</div>
+    <div className="text-xs text-neutral-500 mt-0.5 break-keep leading-snug line-clamp-2">
+      {sortMode === 'recommended'
+        ? '식구들이 많이 찜한 순으로 모았어요 💛'
+        : isInstructorHub
+        ? '가장 최근 업로드부터 보여줘요 🆕'
+        : '가까운 일정부터 차근차근 정리했어요 🙂'}
+    </div>
+  </div>
 
-            <div className="relative" ref={sortWrapRef}>
+            <div className="relative shrink-0" ref={sortWrapRef}>
               <button
                 type="button"
                 onClick={() => setSortOpen((v: boolean) => !v)}
-                className="px-3 py-2 rounded-xl border border-neutral-200 text-sm flex items-center gap-2 hover:bg-neutral-50"
+                className="px-3 py-2 rounded-xl border border-neutral-200 text-sm flex items-center gap-2 hover:bg-neutral-50 whitespace-nowrap"
               >
                 {sortLabel}
                 <ChevronDown className="w-4 h-4 text-neutral-500" />
               </button>
 
               {sortOpen && (
-                <div className="absolute right-0 mt-2 w-[220px] bg-white border border-neutral-200 rounded-xl shadow-lg overflow-hidden z-10">
+                <div className="absolute right-0 mt-2 w-48 max-w-[80vw] bg-white border border-neutral-200 rounded-xl shadow-lg overflow-hidden z-10">
                   {sortOptions.map((opt) => (
                     <button
                       key={opt.value}
@@ -386,8 +388,8 @@ export default function ResourceHubView({
                           <div className="mt-1 text-xs text-neutral-600 whitespace-pre-wrap">{s.comment}</div>
                         )}
 
-                        <div className="mt-2 text-xs text-neutral-500 flex items-center gap-2 flex-wrap">
-                          <Calendar className="w-4 h-4" />
+                        <div className="mt-2 text-xs text-neutral-500 flex items-center gap-2 flex-wrap break-keep">
+                          <Calendar className="w-4 h-4 shrink-0" />
 
                           {isInstructorHub ? (
                             <span>업로드 {uploadDate}</span>
